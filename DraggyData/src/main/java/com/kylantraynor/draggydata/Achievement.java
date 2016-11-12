@@ -1,4 +1,4 @@
-package com.kylantraynor.DraggyData;
+package com.kylantraynor.draggydata;
 
 import java.util.List;
 

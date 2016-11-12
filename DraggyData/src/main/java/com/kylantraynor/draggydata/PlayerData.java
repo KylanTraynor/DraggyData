@@ -1,4 +1,4 @@
-package com.kylantraynor.DraggyData;
+package com.kylantraynor.draggydata;
 
 import java.io.File;
 import java.io.IOException;

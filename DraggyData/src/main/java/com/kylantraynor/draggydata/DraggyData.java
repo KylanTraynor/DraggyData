@@ -1,8 +1,9 @@
-package com.kylantraynor.DraggyData;
+package com.kylantraynor.draggydata;
 
 import java.io.File;
 
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class DraggyData extends JavaPlugin{
 	private static DraggyData currentInstance;
@@ -10,6 +11,15 @@ public class DraggyData extends JavaPlugin{
 	@Override
 	public void onEnable(){
 		currentInstance = this;
+		
+		BukkitRunnable bk = new BukkitRunnable(){
+			@Override
+			public void run() {
+				PlayerData.updateAll();
+			}
+		};
+		
+		bk.runTaskTimer(this, 20L, 20L * 5);
 	}
 
 	public static File getPlayerDataDirectory() {
