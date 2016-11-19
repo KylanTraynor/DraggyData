@@ -3,7 +3,9 @@ package com.kylantraynor.draggydata;
 import java.io.File;
 import java.io.IOException;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 
@@ -26,7 +28,8 @@ public class PlayerData {
 			return all.get(id);
 		}
 	}
-
+	
+	private Instant lastTouched = Instant.now();
 	private UUID playerId;
 	private YamlConfiguration config = new YamlConfiguration();
 	private boolean hasChanged = true;
@@ -72,6 +75,14 @@ public class PlayerData {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public Instant getLastTouched(){
+		return lastTouched;
+	}
+	
+	public void touch(){
+		lastTouched = Instant.now();
 	}
 	
 	public int getLevelForExperience(int exp){
@@ -124,8 +135,13 @@ public class PlayerData {
 	}
 
 	public static void updateAll() {
-		for(PlayerData pd : all.values()){
+		Iterator<UUID> it = all.keySet().iterator();
+		while(it.hasNext()){
+			UUID key = it.next();
+			PlayerData pd = all.get(key);
 			pd.update();
+			if(pd.getLastTouched().isBefore(Instant.now().minus(60, ChronoUnit.MINUTES)))
+				all.remove(key);
 		}
 	}
 
