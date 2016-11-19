@@ -22,7 +22,9 @@ public class PlayerData {
 
 	public static PlayerData get(UUID id){
 		if(all.containsKey(id)){
-			return all.get(id);
+			PlayerData pd = all.get(id);
+			pd.touch();
+			return pd;
 		} else {
 			new PlayerData(id);
 			return all.get(id);
