@@ -69,16 +69,22 @@
  		 	<groupId>io.puharesource.mc</groupId>
   			<artifactId>TitleManager</artifactId>
 		</dependency>
-    	<!-- Spigot API -->
+    	<!--Spigot API-->
     	<dependency>
            <groupId>org.spigotmc</groupId>
            <artifactId>spigot-api</artifactId>
            <scope>provided</scope>
     	</dependency>
-    	<!-- Bukkit API -->
+    	<!--Bukkit API-->
     	<dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
+            <scope>provided</scope>
+    	</dependency>
+    	<!--CraftBukkit-->
+    	<dependency>
+            <groupId>org.bukkit</groupId>
+            <artifactId>craftbukkit</artifactId>
             <scope>provided</scope>
     	</dependency>
 	</dependencies>
@@ -99,12 +105,17 @@
 			<dependency>
 				<groupId>org.spigotmc</groupId>
 				<artifactId>spigot-api</artifactId>
-				<version>1.9-R0.1-SNAPSHOT</version>
+				<version>1.11-R0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.bukkit</groupId>
 				<artifactId>bukkit</artifactId>
-				<version>1.10-R0.1-SNAPSHOT</version>
+				<version>1.11-R0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>org.bukkit</groupId>
+				<artifactId>craftbukkit</artifactId>
+				<version>1.11-R0.1-SNAPSHOT</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
