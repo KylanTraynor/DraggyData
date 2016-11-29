@@ -26,7 +26,7 @@ public class DraggyData extends JavaPlugin{
 		File dir = currentInstance.getDataFolder();
 		if(!dir.exists()) dir.mkdir();
 		File dir1 = new File(dir, "PlayerData");
-		if(!dir1.exists()) dir.mkdir();
+		if(!dir1.exists()) dir1.mkdir();
 		return dir1;
 	}
 	
