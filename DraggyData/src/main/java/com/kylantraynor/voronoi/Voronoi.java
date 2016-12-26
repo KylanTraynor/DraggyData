@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.PriorityQueue;
 
 public class Voronoi<T extends VCell> {
-	public VCell[] cells;
+	private VCell[] cells;
 	
 	private float minXBound;
 	private float minZBound;
