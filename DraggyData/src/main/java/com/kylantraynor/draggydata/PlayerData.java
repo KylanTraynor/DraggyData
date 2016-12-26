@@ -20,7 +20,7 @@ public class PlayerData {
 	
 	private static Map<UUID, PlayerData> all = new HashMap<UUID, PlayerData>();
 
-	public static PlayerData get(UUID id){
+	public static synchronized PlayerData get(UUID id){
 		if(all.containsKey(id)){
 			PlayerData pd = all.get(id);
 			pd.touch();
