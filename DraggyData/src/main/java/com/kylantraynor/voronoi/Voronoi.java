@@ -4,7 +4,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.PriorityQueue;
 
-public class Voronoi {
+public class Voronoi<T extends VCell> {
 	public VCell[] cells;
 	
 	private float minXBound;
@@ -277,16 +277,16 @@ public class Voronoi {
 		}
 	}
 
-	public VCell getCell(VSite site){
+	public T getCell(VSite site){
 		for(VCell c : cells){
-			if(c.site == site) return c;
+			if(c.site == site) return (T) c;
 		}
 		return null;
 	}
 	
-	public VCell getCellAt(VectorXZ v){
+	public T getCellAt(VectorXZ v){
 		for(VCell c : cells){
-			if(c.isInside(v)) return c;
+			if(c.isInside(v)) return (T) c;
 		}
 		return null;
 	}
@@ -329,7 +329,7 @@ public class Voronoi {
 		return this.done;
 	}
 
-	public VCell[] getCells() {
-		return this.cells;
+	public T[] getCells() {
+		return (T[]) this.cells;
 	}
 }
