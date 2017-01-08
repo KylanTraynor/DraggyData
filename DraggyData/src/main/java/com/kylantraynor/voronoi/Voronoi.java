@@ -56,11 +56,18 @@ public class Voronoi<T extends VCell> {
 		maxZBound = z1 < z2 ? z2 : z1;
 	}
 	
-	public Voronoi(VSite[] sites, float x1, float z1, float x2, float z2){
-		this.cells = new VCell[sites.length];
+	public Voronoi(Class<VCell> cls, VSite[] sites, float x1, float z1, float x2, float z2){
+		this.cells = (T[]) Array.newInstance(cls, sites.length);
 		for(int i = 0; i < sites.length; i++){
 			sites[i].id = i;
-			this.cells[i] = new VCell(sites[i], this);
+			try {
+				this.cells[i] = cls.newInstance();
+			} catch (InstantiationException | IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			this.cells[i].site = sites[i];
+			this.cells[i].voronoi = this;
 		}
 		
 		minXBound = x1 < x2 ? x1 : x2;
