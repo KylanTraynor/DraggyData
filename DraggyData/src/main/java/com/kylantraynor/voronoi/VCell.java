@@ -24,6 +24,9 @@ public class VCell{
 		this.voronoi = v;
 	}
 
+	public VCell() {
+	}
+
 	/**
 	 * Only for testing purposes. Remove in final version.
 	 * @param g

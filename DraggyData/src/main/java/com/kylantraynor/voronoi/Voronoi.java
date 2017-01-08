@@ -1,24 +1,53 @@
 package com.kylantraynor.voronoi;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.PriorityQueue;
 
 public class Voronoi<T extends VCell> {
+	//private VCell[] cells;
 	private VCell[] cells;
 	
 	private float minXBound;
 	private float minZBound;
 	private float maxXBound;
 	private float maxZBound;
-	
+	/*
 	public Voronoi(VectorXZ[] sites, Float[] ws, float x1, float z1, float x2, float z2) {
 		this.cells = new VCell[sites.length];
 		
 		for(int i = 0; i < sites.length; i++){
 			VSite s = new VSite(sites[i].x, sites[i].z, ws[i]);
 			s.id = i;
-			this.cells[i] = new VCell(s, this);
+			VCell c = new VCell(s, this);
+			this.cells[i] = c;
+		}
+		
+		minXBound = x1 < x2 ? x1 : x2;
+		maxXBound = x1 < x2 ? x2 : x1;
+		minZBound = z1 < z2 ? z1 : z2;
+		maxZBound = z1 < z2 ? z2 : z1;
+	}
+	*/
+	
+	public Voronoi(Class<T> cls, VectorXZ[] sites, Float[] ws, float x1, float z1, float x2, float z2) {
+		this.cells = (T[]) Array.newInstance(cls, sites.length);
+		for(int i = 0; i < sites.length; i++){
+			VSite s = new VSite(sites[i].x, sites[i].z, ws[i]);
+			s.id = i;
+			VCell c = null;
+			try {
+				c = cls.newInstance();
+			} catch (InstantiationException | IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			c.site = s;
+			c.voronoi = this;
+			this.cells[i] = c;
 		}
 		
 		minXBound = x1 < x2 ? x1 : x2;
