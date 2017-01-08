@@ -56,7 +56,7 @@ public class Voronoi<T extends VCell> {
 		maxZBound = z1 < z2 ? z2 : z1;
 	}
 	
-	public Voronoi(Class<VCell> cls, VSite[] sites, float x1, float z1, float x2, float z2){
+	public Voronoi(Class<T> cls, VSite[] sites, float x1, float z1, float x2, float z2){
 		this.cells = (T[]) Array.newInstance(cls, sites.length);
 		for(int i = 0; i < sites.length; i++){
 			sites[i].id = i;
