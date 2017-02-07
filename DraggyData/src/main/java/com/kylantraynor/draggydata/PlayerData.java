@@ -15,6 +15,7 @@ import org.bukkit.Sound;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class PlayerData {
 	
@@ -72,11 +73,20 @@ public class PlayerData {
 	
 	public void save(){
 		File f = getFile();
-		try {
-			config.save(f);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		BukkitRunnable br = new BukkitRunnable(){
+
+			@Override
+			public void run() {
+				try {
+					config.save(f);
+					setChanged(false);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			
+		};
+		br.runTaskAsynchronously(DraggyData.getInstance());
 	}
 	
 	public Instant getLastTouched(){
@@ -103,7 +113,7 @@ public class PlayerData {
 		int oldLevel = getSkillLevel(skill);
 		int currentExp = getSkillExperience(skill);
 		config.set("Skills." + skill, Math.max(currentExp + amount, 1));
-		hasChanged = true;
+		setChanged(true);
 		if(oldLevel != getSkillLevel(skill)){
 			Player p = Bukkit.getPlayer(playerId);
 			if(p != null){
@@ -142,7 +152,7 @@ public class PlayerData {
 			UUID key = it.next();
 			PlayerData pd = all.get(key);
 			pd.update();
-			if(pd.getLastTouched().isBefore(Instant.now().minus(60, ChronoUnit.MINUTES)))
+			if(pd.getLastTouched().isBefore(Instant.now().minus(30, ChronoUnit.MINUTES)))
 				all.remove(key);
 		}
 	}
@@ -160,6 +170,7 @@ public class PlayerData {
 	
 	public void set(String attribute, Object value){
 		this.config.set("General." + attribute, value);
+		setChanged(true);
 	}
 	
 	public int getStat(String stat){
@@ -175,7 +186,7 @@ public class PlayerData {
 	
 	public void setStat(String stat, int newValue){
 		this.config.set("General.Stats." + stat, newValue);
-		hasChanged = true;
+		setChanged(true);
 	}
 	
 	public boolean hasAchievement(Achievement a){
@@ -185,10 +196,14 @@ public class PlayerData {
 	public boolean giveAchievement(Achievement a){
 		if(!hasAchievement(a)){
 			this.config.set("Achievements." + a.getId(), Instant.now().toString());
-			hasChanged = true;
+			setChanged(true);
 			return true;
 		} else {
 			return false;
 		}
+	}
+	
+	public synchronized void setChanged(boolean changed){
+		hasChanged = changed;
 	}
 }

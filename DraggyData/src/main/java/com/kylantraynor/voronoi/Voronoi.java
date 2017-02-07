@@ -33,6 +33,7 @@ public class Voronoi<T extends VCell> {
 	}
 	*/
 	
+	@SuppressWarnings("unchecked")
 	public Voronoi(Class<T> cls, VectorXZ[] sites, Float[] ws, float x1, float z1, float x2, float z2) {
 		this.cells = (T[]) Array.newInstance(cls, sites.length);
 		for(int i = 0; i < sites.length; i++){
@@ -56,6 +57,7 @@ public class Voronoi<T extends VCell> {
 		maxZBound = z1 < z2 ? z2 : z1;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public Voronoi(Class<T> cls, VSite[] sites, float x1, float z1, float x2, float z2){
 		this.cells = (T[]) Array.newInstance(cls, sites.length);
 		for(int i = 0; i < sites.length; i++){
