@@ -1,5 +1,5 @@
 name: DraggyData
 main: com.kylantraynor.draggydata.DraggyData
-version: 0.0.2
+version: 0.0.3
 authors: [KylanTraynor]
 softdepend: [Vault, TitleManager]

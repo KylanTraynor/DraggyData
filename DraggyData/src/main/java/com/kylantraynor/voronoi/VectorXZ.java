@@ -15,8 +15,12 @@ public class VectorXZ {
 		this.length = (float) Math.sqrt(x*x + z*z);
 	}
 	
+	public double distanceSquared(VectorXZ v){
+		return  (x-v.x)*(x-v.x) + (z-v.z)*(z-v.z) ;
+	}
+	
 	public double distance(VectorXZ v){
-		return Math.sqrt( (x-v.x)*(x-v.x) + (z-v.z)*(z-v.z) );
+		return Math.sqrt( distanceSquared(v) );
 	}
 	
 	@Override
