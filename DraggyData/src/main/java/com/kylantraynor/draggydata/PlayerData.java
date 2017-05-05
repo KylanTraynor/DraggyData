@@ -19,16 +19,18 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class PlayerData {
 	
-	private static Map<UUID, PlayerData> all = new HashMap<UUID, PlayerData>();
+	private final static Map<UUID, PlayerData> all = new HashMap<UUID, PlayerData>();
 
-	public static synchronized PlayerData get(UUID id){
-		if(all.containsKey(id)){
-			PlayerData pd = all.get(id);
-			pd.touch();
-			return pd;
-		} else {
-			new PlayerData(id);
-			return all.get(id);
+	public static PlayerData get(UUID id){
+		synchronized (all) {
+			if(all.containsKey(id)){
+				PlayerData pd = all.get(id);
+				pd.touch();
+				return pd;
+			} else {
+				new PlayerData(id);
+				return all.get(id);
+			}
 		}
 	}
 	
@@ -42,7 +44,9 @@ public class PlayerData {
 		File f = getFile();
 		try {
 			config.load(f);
-			all.put(id, this);
+			synchronized (all){
+				all.put(id, this);
+			}
 		} catch (IOException | InvalidConfigurationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
