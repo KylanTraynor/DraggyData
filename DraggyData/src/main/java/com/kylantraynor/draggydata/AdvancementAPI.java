@@ -5,7 +5,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
@@ -29,6 +32,7 @@ public class AdvancementAPI {
     private boolean announce, toast;
     private FrameType frame;
     private List<ItemStack> items;
+    private Map<String, List<String>> criterias = new HashMap<String, List<String>>();
 
     public AdvancementAPI(NamespacedKey id) {
         this.id = id;
@@ -41,6 +45,15 @@ public class AdvancementAPI {
         return id.toString();
     }
 
+    public Map<String, List<String>> getCriterias(){
+    	return criterias;
+    }
+    
+    public AdvancementAPI withCriterias(Map<String, List<String>> map){
+    	this.criterias = map;
+    	return this;
+    }
+    
     public String getIcon() {
         return icon;
     }
@@ -154,7 +167,7 @@ public class AdvancementAPI {
 
         JSONObject criteria = new JSONObject();
         JSONObject conditions = new JSONObject();
-        JSONObject elytra = new JSONObject();
+        //JSONObject elytra = new JSONObject();
 
         JSONArray itemArray = new JSONArray();
         JSONObject itemJSON = new JSONObject();
@@ -169,12 +182,16 @@ public class AdvancementAPI {
          * Define each criteria, for each criteria in list,
          * add items, trigger and conditions
          */
-
-        conditions.put("items", itemArray);
-        elytra.put("trigger", getTrigger());
-        elytra.put("conditions", conditions);
-
-        criteria.put("elytra", elytra);
+        //conditions.put("items", itemArray);
+        //elytra.put("trigger", getTrigger());
+        //elytra.put("conditions", conditions);
+        for(Entry<String, List<String>> e : criterias.entrySet()){
+        	JSONObject crit = new JSONObject();
+        	crit.put("trigger", e.getValue().get(0));
+        	
+        	criteria.put(e.getKey(), crit);
+        }
+        //criteria.put("elytra", elytra);
 
         json.put("criteria", criteria);
         
