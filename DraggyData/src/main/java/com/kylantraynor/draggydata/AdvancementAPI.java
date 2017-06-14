@@ -211,7 +211,12 @@ public class AdvancementAPI {
     }
     
     public Advancement load(){
-    	return Bukkit.getUnsafe().loadAdvancement(this.id, getJSON());
+    	try{
+    		return Bukkit.getUnsafe().loadAdvancement(this.id, getJSON());
+    	} catch (Exception e){
+    		e.printStackTrace();
+    		return null;
+    	}
     }
     
     public void save(World world) {
