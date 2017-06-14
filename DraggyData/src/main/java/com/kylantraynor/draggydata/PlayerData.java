@@ -27,7 +27,6 @@ public class PlayerData {
 				PlayerData pd = all.get(id);
 				pd.touch();
 				return pd;
-				
 			} else {
 				new PlayerData(id);
 				return all.get(id);
@@ -152,13 +151,15 @@ public class PlayerData {
 	}
 
 	public static void updateAll() {
-		Iterator<UUID> it = all.keySet().iterator();
-		while(it.hasNext()){
-			UUID key = it.next();
-			PlayerData pd = all.get(key);
-			pd.update();
-			if(pd.getLastTouched().isBefore(Instant.now().minus(30, ChronoUnit.MINUTES)))
-				all.remove(key);
+		synchronized(all){
+			Iterator<UUID> it = all.keySet().iterator();
+			while(it.hasNext()){
+				UUID key = it.next();
+				PlayerData pd = all.get(key);
+				pd.update();
+				if(pd.getLastTouched().isBefore(Instant.now().minus(30, ChronoUnit.MINUTES)))
+					all.remove(key);
+			}
 		}
 	}
 
