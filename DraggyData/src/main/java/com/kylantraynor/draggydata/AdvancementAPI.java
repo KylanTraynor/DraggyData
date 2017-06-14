@@ -13,6 +13,7 @@ import java.util.Map.Entry;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
+import org.bukkit.advancement.Advancement;
 import org.bukkit.inventory.ItemStack;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -207,6 +208,10 @@ public class AdvancementAPI {
 
     public void save(String world) {
         this.save(Bukkit.getWorld(world));
+    }
+    
+    public Advancement load(){
+    	return Bukkit.getUnsafe().loadAdvancement(this.id, getJSON());
     }
     
     public void save(World world) {
