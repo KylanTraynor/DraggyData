@@ -28,11 +28,12 @@ import com.google.gson.GsonBuilder;
 public class AdvancementAPI {
 
     private NamespacedKey id;
-    private String title, parent, trigger, icon, description, background;
+    private String title, parent, trigger, description, background;
+    private ItemStack icon;
     private boolean announce, toast;
     private FrameType frame;
     private List<ItemStack> items;
-    private Map<String, List<String>> criterias = new HashMap<String, List<String>>();
+    private Map<String, TriggerType> criterias = new HashMap<String, TriggerType>();
 
     public AdvancementAPI(NamespacedKey id) {
         this.id = id;
@@ -45,20 +46,20 @@ public class AdvancementAPI {
         return id.toString();
     }
 
-    public Map<String, List<String>> getCriterias(){
+    public Map<String, TriggerType> getCriterias(){
     	return criterias;
     }
     
-    public AdvancementAPI withCriterias(Map<String, List<String>> map){
+    public AdvancementAPI withCriterias(Map<String, TriggerType> map){
     	this.criterias = map;
     	return this;
     }
     
-    public String getIcon() {
+    public ItemStack getIcon() {
         return icon;
     }
 
-    public AdvancementAPI withIcon(String icon) {
+    public AdvancementAPI withIcon(ItemStack icon) {
         this.icon = icon;
         return this;
     }
@@ -152,7 +153,7 @@ public class AdvancementAPI {
         JSONObject json = new JSONObject();
 
         JSONObject icon = new JSONObject();
-        icon.put("item", getIcon());
+        icon.put("item", "minecraft:" + getIcon().getType().name().toLowerCase());
 
         JSONObject display = new JSONObject();
         display.put("icon", icon);
@@ -185,9 +186,9 @@ public class AdvancementAPI {
         //conditions.put("items", itemArray);
         //elytra.put("trigger", getTrigger());
         //elytra.put("conditions", conditions);
-        for(Entry<String, List<String>> e : criterias.entrySet()){
+        for(Entry<String, TriggerType> e : criterias.entrySet()){
         	JSONObject crit = new JSONObject();
-        	crit.put("trigger", e.getValue().get(0));
+        	crit.put("trigger", e.getValue().toString());
         	
         	criteria.put(e.getKey(), crit);
         }
@@ -243,6 +244,21 @@ public class AdvancementAPI {
     	
     	public String toString(){
     	  return name;
+    	}
+    }
+    
+    public enum TriggerType {
+    	
+    	IMPOSSIBLE("impossible");
+    	
+    	private String name = "impossible";
+    	
+    	private TriggerType(String name){
+    		this.name = name;
+    	}
+    	
+    	public String toString(){
+    		return "minecraft:"+name;
     	}
     }
     
