@@ -196,6 +196,7 @@ public class PlayerData {
 	
 	public boolean hasAchievement(Achievement a){
 		return this.config.contains("Achievements." + a.getId());
+		
 	}
 	
 	public boolean giveAchievement(Achievement a){
