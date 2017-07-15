@@ -315,4 +315,22 @@ public class VCell{
 	public Voronoi getVoronoi(){
 		return voronoi;
 	}
+	
+	@Override
+	public boolean equals(Object o){
+		if(o instanceof VCell){
+			if(o.hashCode() == this.hashCode())
+				if(this.site.equals(((VCell)o).getSite())){
+					return true;
+				}
+		}
+		return false;
+	}
+	
+	@Override
+	public int hashCode(){
+		int hash = 17;
+		hash = hash * this.site.hashCode();
+		return hash;
+	}
 }
