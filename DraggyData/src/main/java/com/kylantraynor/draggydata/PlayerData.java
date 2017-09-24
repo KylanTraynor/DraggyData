@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -19,18 +21,16 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class PlayerData {
 	
-	private final static Map<UUID, PlayerData> all = new HashMap<UUID, PlayerData>();
+	private final static ConcurrentMap<UUID, PlayerData> all = new ConcurrentHashMap<UUID, PlayerData>();
 
 	public static PlayerData get(UUID id){
-		synchronized (all) {
-			if(all.containsKey(id)){
-				PlayerData pd = all.get(id);
-				pd.touch();
-				return pd;
-			} else {
-				new PlayerData(id);
-				return all.get(id);
-			}
+		if(all.containsKey(id)){
+			PlayerData pd = all.get(id);
+			pd.touch();
+			return pd;
+		} else {
+			new PlayerData(id);
+			return all.get(id);
 		}
 	}
 	
@@ -44,9 +44,7 @@ public class PlayerData {
 		File f = getFile();
 		try {
 			config.load(f);
-			synchronized (all){
-				all.put(id, this);
-			}
+			all.put(id, this);
 		} catch (IOException | InvalidConfigurationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -151,15 +149,13 @@ public class PlayerData {
 	}
 
 	public static void updateAll() {
-		synchronized(all){
-			Iterator<UUID> it = all.keySet().iterator();
-			while(it.hasNext()){
-				UUID key = it.next();
-				PlayerData pd = all.get(key);
-				pd.update();
-				if(pd.getLastTouched().isBefore(Instant.now().minus(30, ChronoUnit.MINUTES)))
-					all.remove(key);
-			}
+		Iterator<UUID> it = all.keySet().iterator();
+		while(it.hasNext()){
+			UUID key = it.next();
+			PlayerData pd = all.get(key);
+			pd.update();
+			if(pd.getLastTouched().isBefore(Instant.now().minus(30, ChronoUnit.MINUTES)))
+				all.remove(key);
 		}
 	}
 
