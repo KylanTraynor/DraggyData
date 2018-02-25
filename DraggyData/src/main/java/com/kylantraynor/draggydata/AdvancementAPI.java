@@ -209,14 +209,16 @@ public class AdvancementAPI {
     public void save(String world) {
         this.save(Bukkit.getWorld(world));
     }
-    
+
+    @Deprecated
     public Advancement load(){
-    	try{
+    	/*try{
     		return Bukkit.getUnsafe().loadAdvancement(this.id, getJSON());
     	} catch (Exception e){
     		e.printStackTrace();
     		return null;
-    	}
+    	}*/
+    	return null;
     }
     
     public void save(World world) {
